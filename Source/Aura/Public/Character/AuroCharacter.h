@@ -16,6 +16,11 @@ public:
 	// Sets default values for this character's properties
 	AAuroCharacter();
 
+	virtual void PossessedBy(AController* NewController) override;
+	
+	virtual void OnRep_PlayerState() override;
 
+private:
 
+	void InitAbilityActorInfo();
 };

@@ -1,24 +1,26 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyrights for GEAGM
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "GameFramework/Character.h"
-#include "AuroCharacterBase.generated.h"
+#include "GameFramework/PlayerState.h"
+#include "AuraPlayerState.generated.h"
 
 
 class UAbilitySystemComponent;
 class UAttributeSet;
 
-UCLASS(ABSTRACT)
-class AURA_API AAuroCharacterBase : public ACharacter , public IAbilitySystemInterface
+
+UCLASS()
+class AURA_API AAuraPlayerState : public APlayerState , public IAbilitySystemInterface
 {
 	GENERATED_BODY()
+	
 
 public:
 
-	AAuroCharacterBase();
+	AAuraPlayerState();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
@@ -26,14 +28,11 @@ public:
 
 protected:
 
-	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	TObjectPtr<USkeletalMeshComponent> Weapon;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
 };

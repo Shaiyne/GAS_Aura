@@ -14,6 +14,11 @@ AAuroCharacterBase::AAuroCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+UAbilitySystemComponent* AAuroCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 
 void AAuroCharacterBase::BeginPlay()
 {
