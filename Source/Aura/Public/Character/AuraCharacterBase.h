@@ -5,20 +5,20 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
-#include "AuroCharacterBase.generated.h"
+#include "AuraCharacterBase.generated.h"
 
 
 class UAbilitySystemComponent;
 class UAttributeSet;
 
 UCLASS(ABSTRACT)
-class AURA_API AAuroCharacterBase : public ACharacter , public IAbilitySystemInterface
+class AURA_API AAuraCharacterBase : public ACharacter , public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 
-	AAuroCharacterBase();
+	AAuraCharacterBase();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 

@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/AuroCharacterBase.h"
+#include "Character/AuraCharacterBase.h"
 
 
-AAuroCharacterBase::AAuroCharacterBase()
+AAuraCharacterBase::AAuraCharacterBase()
 {
 
 	PrimaryActorTick.bCanEverTick = false;
@@ -14,13 +14,13 @@ AAuroCharacterBase::AAuroCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-UAbilitySystemComponent* AAuroCharacterBase::GetAbilitySystemComponent() const
+UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
 
 
-void AAuroCharacterBase::BeginPlay()
+void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 

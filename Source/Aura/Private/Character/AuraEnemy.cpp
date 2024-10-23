@@ -1,14 +1,14 @@
 // Copyrights for GEAGM
 
 
-#include "Character/AuroEnemy.h"
+#include "Character/AuraEnemy.h"
 #include <Aura/Aura.h>
 #include <AbilitySystem/AuraAbilitySystemComponent.h>
 #include <AbilitySystem/AuraAttributeSet.h>
 
 
 
-AAuroEnemy::AAuroEnemy()
+AAuraEnemy::AAuraEnemy()
 {
 
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
@@ -21,7 +21,7 @@ AAuroEnemy::AAuroEnemy()
 
 }
 
-void AAuroEnemy::HighlightActor()
+void AAuraEnemy::HighlightActor()
 {
 
 	GetMesh()->SetRenderCustomDepth(true);
@@ -34,7 +34,7 @@ void AAuroEnemy::HighlightActor()
 
 }
 
-void AAuroEnemy::UnHighlightActor()
+void AAuraEnemy::UnHighlightActor()
 {
 
 	GetMesh()->SetRenderCustomDepth(false);
@@ -42,7 +42,7 @@ void AAuroEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
-void AAuroEnemy::BeginPlay()
+void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 

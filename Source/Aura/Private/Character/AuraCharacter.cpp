@@ -1,14 +1,14 @@
 // Copyrights for GEAGM
 
 
-#include "Character/AuroCharacter.h"
+#include "Character/AuraCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include <Player/AuraPlayerState.h>
 #include <AbilitySystem/AuraAbilitySystemComponent.h>
 
 
 
-AAuroCharacter::AAuroCharacter()
+AAuraCharacter::AAuraCharacter()
 {
 
 	PrimaryActorTick.bCanEverTick = true;
@@ -28,7 +28,7 @@ AAuroCharacter::AAuroCharacter()
 
 }
 
-void AAuroCharacter::PossessedBy(AController* NewController)
+void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
@@ -38,7 +38,7 @@ void AAuroCharacter::PossessedBy(AController* NewController)
 
 }
 
-void AAuroCharacter::OnRep_PlayerState()
+void AAuraCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
@@ -47,7 +47,7 @@ void AAuroCharacter::OnRep_PlayerState()
 
 }
 
-void AAuroCharacter::InitAbilityActorInfo()
+void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 
