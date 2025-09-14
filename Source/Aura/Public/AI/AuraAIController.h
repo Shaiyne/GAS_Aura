@@ -23,7 +23,5 @@ public:
 
 protected:
 
-	TObjectPtr<UBlackboardComponent> BlackboardComponent;
-
 	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
 };
