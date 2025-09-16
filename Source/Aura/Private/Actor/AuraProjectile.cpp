@@ -10,6 +10,7 @@
 #include <Aura/Aura.h>
 #include "AbilitySystemComponent.h"
 #include <AbilitySystemBlueprintLibrary.h>
+#include <AbilitySystem/AuraAbilitySystemLibrary.h>
 
 AAuraProjectile::AAuraProjectile()
 {
@@ -60,6 +61,12 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverllapedComponent, 
 	{
 		return;
 	}
+
+	if(!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
+	{
+		return;
+	}
+
 	if (!bHit)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
