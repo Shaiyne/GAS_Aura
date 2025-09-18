@@ -195,7 +195,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
-		GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Red, FString::Printf(TEXT("Mana : %f"), GetHealth()));
 		SetMana(FMath::Clamp(GetMana(), 0, GetMaxMana()));
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
