@@ -4,9 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UI/WidgetController/AuraWidgetController.h"
-#include "AbilitySystem/Data/AttributeInfo.h"
-#include <AttributeSet.h>
+#include "AttributeSet.h"
 #include "AttributeMenuWidgetController.generated.h"
+
+struct FGameplayTag;
+struct FAuraAttributeInfo;
+class UAttributeInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
 
@@ -26,6 +29,14 @@ public:
 
 	UPROPERTY(BlueprintAssignable,Category = "GAS|Attributes")
 	FAttributeInfoSignature AttributeInfoDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
+
+	UFUNCTION(BlueprintCallable, Category = "GAS|Attributes")
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+
+protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;
