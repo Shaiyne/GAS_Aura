@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameplayEffectTypes.h"
 #include "AuraProjectile.generated.h"
 
 
 class USphereComponent;
 class UNiagaraSystem;
+struct FDamageEffectParams;
 class UProjectileMovementComponent;
 
 UCLASS()
@@ -25,12 +25,17 @@ public:
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
-	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+	FDamageEffectParams DamageEffectParams;
+
+	//UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	//FGameplayEffectSpecHandle DamageEffectSpecHandle;
 
 protected:
 	
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
+
+	void OnHit();
 
 
 	UFUNCTION()

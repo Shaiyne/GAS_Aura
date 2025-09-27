@@ -11,6 +11,7 @@
 
 
 class UAbilitySystemComponent;
+class UDebuffNiagaraComponent;
 class UAttributeSet;
 class UGameplayEffect;
 class UGameplayAbility;
@@ -32,7 +33,7 @@ public:
 
 	/* Combat Interface  */
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-	virtual void Die() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
@@ -42,10 +43,15 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDeath GetOnDeathDelegate() override;
 	/* end Combat Interface */
 
+	FOnASCRegistered OnAscRegistered;
+	FOnDeath OnDeath;
+
 	UFUNCTION(NetMulticast,Reliable)
-	virtual void MC_HandleDeath();
+	virtual void MC_HandleDeath(const FVector& DeathImpulse);
 
 	UPROPERTY(EditAnywhere,Category = "Combat")
 	TArray<FTaggedMontage> AttackMontages;
@@ -124,6 +130,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
 private:
 
