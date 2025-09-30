@@ -27,6 +27,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	FDamageEffectParams DamageEffectParams;
 
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetSceneComponent;
+
 	//UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	//FGameplayEffectSpecHandle DamageEffectSpecHandle;
 

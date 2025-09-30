@@ -5,10 +5,10 @@
 #include "CoreMinimal.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "AttributeSet.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
 #include "AttributeMenuWidgetController.generated.h"
 
 struct FGameplayTag;
-struct FAuraAttributeInfo;
 class UAttributeInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
