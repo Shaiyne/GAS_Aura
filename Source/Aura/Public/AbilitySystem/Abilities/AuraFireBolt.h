@@ -16,9 +16,9 @@ class AURA_API UAuraFireBolt : public UAuraProjectileSpell
 	
 public:
 
-	virtual FString GetDesription(int32 Level) override;
+	virtual FString GetDescription(int32 Level) override;
 
-	virtual FString GetNextLevelDesription(int32 Level) override;
+	virtual FString GetNextLevelDescription(int32 Level) override;
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride, AActor* HomingTarget);

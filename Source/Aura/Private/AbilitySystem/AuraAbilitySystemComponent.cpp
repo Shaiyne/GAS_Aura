@@ -390,8 +390,8 @@ bool UAuraAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag
 	{	
 		if (UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec->Ability))
 		{
-			OutDesription = AuraAbility->GetDesription(AbilitySpec->Level);
-			OutNextLevelDescription = AuraAbility->GetNextLevelDesription(AbilitySpec->Level + 1);
+			OutDesription = AuraAbility->GetDescription(AbilitySpec->Level);
+			OutNextLevelDescription = AuraAbility->GetNextLevelDescription(AbilitySpec->Level + 1);
 			return true;
 		}
 	}

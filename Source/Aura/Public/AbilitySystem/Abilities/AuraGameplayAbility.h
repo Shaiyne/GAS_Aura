@@ -21,9 +21,9 @@ public:
 	FGameplayTag StartupInputTag;
 
 
-	virtual FString GetDesription(int32 Level);
+	virtual FString GetDescription(int32 Level);
 
-	virtual FString GetNextLevelDesription(int32 Level);
+	virtual FString GetNextLevelDescription(int32 Level);
 
 	static FString GetLockedDescription(int32 Level);
 
