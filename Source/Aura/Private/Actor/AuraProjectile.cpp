@@ -6,12 +6,12 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/AudioComponent.h"
-#include "../../../../../../../../../Program Files/Epic Games/UE_5.1/Engine/Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h"
 #include <Aura/Aura.h>
 #include "AbilitySystemComponent.h"
 #include "AuraAbilityTypes.h"
 #include <AbilitySystemBlueprintLibrary.h>
 #include <AbilitySystem/AuraAbilitySystemLibrary.h>
+#include <NiagaraFunctionLibrary.h>
 
 AAuraProjectile::AAuraProjectile()
 {

@@ -32,7 +32,8 @@ AAuraEnemy::AAuraEnemy()
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
 
-	HealthBar = CreateAbstractDefaultSubobject<UWidgetComponent>("HealthBar");
+	//HealthBar = CreateAbstractDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
 
 	BaseWalkSpeed = 250.f;

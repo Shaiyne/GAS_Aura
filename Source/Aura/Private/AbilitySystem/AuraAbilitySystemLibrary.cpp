@@ -12,6 +12,7 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include <Interaction/CombatInterface.h>
 #include <AuraGameplayTags.h>
+#include "Engine/OverlapResult.h"
 
 bool UAuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AAuraHUD*& OutAuraHUD)
 {

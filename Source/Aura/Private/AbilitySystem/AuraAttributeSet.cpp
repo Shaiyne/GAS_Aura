@@ -13,6 +13,7 @@
 #include <AbilitySystem/AuraAbilitySystemLibrary.h>
 #include <Interaction/PlayerInterface.h>
 #include <AuraAbilityTypes.h>
+#include <GameplayEffectComponents/TargetTagsGameplayEffectComponent.h>
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -318,14 +319,20 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 
 	const FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuffs[DamageType];
-	Effect->InheritableOwnedTagsContainer.AddTag(DebuffTag);
+	//Effect->InheritableOwnedTagsContainer.AddTag(DebuffTag);
+	FGameplayEffectSpec* MutableSpecGranted = new FGameplayEffectSpec(Effect, EffectContext, 1.f);
+	MutableSpecGranted->DynamicGrantedTags.AddTag(DebuffTag);
 
 	if (DebuffTag.MatchesTagExact(GameplayTags.Debuff_Stun))
 	{
-		Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_CursorTrace);
-		Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_InputHeld);
-		Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_InputPressed);
-		Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_InputReleased);
+		MutableSpecGranted->DynamicGrantedTags.AddTag(GameplayTags.Player_Block_CursorTrace);
+		MutableSpecGranted->DynamicGrantedTags.AddTag(GameplayTags.Player_Block_InputHeld);
+		MutableSpecGranted->DynamicGrantedTags.AddTag(GameplayTags.Player_Block_InputPressed);
+		MutableSpecGranted->DynamicGrantedTags.AddTag(GameplayTags.Player_Block_InputReleased);
+		//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_CursorTrace);
+		//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_InputHeld);
+		//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_InputPressed);
+		//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.Player_Block_InputReleased);
 	}
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
