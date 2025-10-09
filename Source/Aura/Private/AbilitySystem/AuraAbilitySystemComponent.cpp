@@ -9,6 +9,7 @@
 #include <AbilitySystemBlueprintLibrary.h>
 #include <AbilitySystem/AuraAbilitySystemLibrary.h>
 #include <AbilitySystem/Data/AbilityInfo.h>
+#include "Game/LoadScreenSaveGame.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -25,6 +26,37 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	//);
 }
 
+void UAuraAbilitySystemComponent::AddCharacterAbilitiesFromSaveData(ULoadScreenSaveGame* SaveData)
+{
+	for (const FSavedAbility& Data : SaveData->SavedAbilities)
+	{
+		const TSubclassOf<UGameplayAbility> LoadedAbilityClass = Data.GameplayAbility;
+
+		FGameplayAbilitySpec LoadedAbilitySpec = FGameplayAbilitySpec(LoadedAbilityClass, Data.AbilityLevel);
+
+		LoadedAbilitySpec.GetDynamicSpecSourceTags().AddTag(Data.AbilitySlot);
+		LoadedAbilitySpec.GetDynamicSpecSourceTags().AddTag(Data.AbilityStatus);
+		if (Data.AbilityType == FAuraGameplayTags::Get().Abilities_Type_Offensive)
+		{
+			GiveAbility(LoadedAbilitySpec);
+		}
+		else if (Data.AbilityType == FAuraGameplayTags::Get().Abilities_Type_Passive)
+		{
+			if (Data.AbilityStatus.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Equipped))
+			{
+				GiveAbilityAndActivateOnce(LoadedAbilitySpec);
+				MulticastActivatePassiveEffect(Data.AbilityTag, true);
+			}
+			else
+			{
+				GiveAbility(LoadedAbilitySpec);
+			}
+		}
+	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast();
+}
+
 void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
 {
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
@@ -34,7 +66,7 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 		if (const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.GetDynamicSpecSourceTags().AddTag(AuraAbility->StartupInputTag);
-			AbilitySpec.GetDynamicSpecSourceTags().AddTag(FAuraGameplayTags::Get().Abilities_Status_Equipped);
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(FAuraGameplayTags::Get().Abilities_Status_Equipped);
 			GiveAbility(AbilitySpec);
 		}
 
@@ -49,6 +81,7 @@ void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSub
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupPassiveAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(FAuraGameplayTags::Get().Abilities_Status_Equipped);
 		GiveAbilityAndActivateOnce(AbilitySpec);
 	}
 }
@@ -318,24 +351,25 @@ void UAuraAbilitySystemComponent::SR_EquipAbility_Implementation(const FGameplay
 {
 	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
 	{
-		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 		const FGameplayTag& PrevSlot = GetInputTagFromSpec(*AbilitySpec);
 		const FGameplayTag& Status = GetStatusFromSpec(*AbilitySpec);
 
 		const bool bStatusValid = Status == GameplayTags.Abilities_Status_Equipped || Status == GameplayTags.Abilities_Status_Unlocked;
 		if (bStatusValid)
 		{
+
 			// Handle activation/deactivation for passive abilities
 
-			if(!SlotIsEmpty(Slot)) // There is an ability in this slot already. Deactivate and clear its slot.
+			if (!SlotIsEmpty(Slot)) // There is an ability in this slot already. Deactivate and clear its slot.
 			{
-
 				FGameplayAbilitySpec* SpecWithSlot = GetSpecWithSlot(Slot);
 				if (SpecWithSlot)
 				{
-					// is that ability the same as this ability? If so , we can return early
-					if(AbilityTag.MatchesTagExact(GetAbilityTagFromSpec(*SpecWithSlot)))
+					// is that ability the same as this ability? If so, we can return early.
+					if (AbilityTag.MatchesTagExact(GetAbilityTagFromSpec(*SpecWithSlot)))
 					{
+						ClientEquipAbility(AbilityTag, GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
 						return;
 					}
 
@@ -349,40 +383,19 @@ void UAuraAbilitySystemComponent::SR_EquipAbility_Implementation(const FGameplay
 				}
 			}
 
-			if (!AbilityHasAnySlot(*AbilitySpec)) // Ability doesn't yet have a slot (It's not active)
+			if (!AbilityHasAnySlot(*AbilitySpec)) // Ability doesn't yet have a slot (it's not active)
 			{
-				if(IsPassiveAbility(*AbilitySpec))
+				if (IsPassiveAbility(*AbilitySpec))
 				{
-					// Activate the passive ability
 					TryActivateAbility(AbilitySpec->Handle);
 					MulticastActivatePassiveEffect(AbilityTag, true);
 				}
-			}
-
-			// Now, assign this ability to this slot
-			AssignSlotToAbility(*AbilitySpec, Slot);
-
-			/*
-			// Remove this InputTag (slot) from any Ability that has it
-			ClearAbilitiesOfSlot(Slot);
-
-			// Clear this ability's slot , just in case, it's a different slot
-			ClearSlot(AbilitySpec);
-
-			// Now, assign this ability to this slot
-			AbilitySpec->GetDynamicSpecSourceTags().AddTag(Slot);
-
-			if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
-			{
-				AbilitySpec->GetDynamicSpecSourceTags().RemoveTag(GameplayTags.Abilities_Status_Unlocked);
+				AbilitySpec->GetDynamicSpecSourceTags().RemoveTag(GetStatusFromSpec(*AbilitySpec));
 				AbilitySpec->GetDynamicSpecSourceTags().AddTag(GameplayTags.Abilities_Status_Equipped);
 			}
-			*/
-
-
+			AssignSlotToAbility(*AbilitySpec, Slot);
 			MarkAbilitySpecDirty(*AbilitySpec);
 		}
-
 		ClientEquipAbility(AbilityTag, GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
 	}
 }

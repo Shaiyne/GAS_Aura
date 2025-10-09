@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "AuraAbilityTypes.h"
 #include "AuraProjectile.generated.h"
 
 
 class USphereComponent;
 class UNiagaraSystem;
-struct FDamageEffectParams;
 class UProjectileMovementComponent;
 
 UCLASS()
